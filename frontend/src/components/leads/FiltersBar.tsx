@@ -1,4 +1,5 @@
-import { Search, SlidersHorizontal, Download, Plus } from 'lucide-react';
+import { useRef } from 'react';
+import { Search, SlidersHorizontal, Download, Upload, Plus } from 'lucide-react';
 import type { LeadFilters, LeadStatus, LeadSource } from '../../types';
 import { Button } from '../ui/Button';
 
@@ -8,8 +9,10 @@ interface FiltersBarProps {
   onSearchChange: (v: string) => void;
   onFilterChange: (key: keyof LeadFilters, value: string | number | undefined) => void;
   onExport: () => void;
+  onImport: (file: File) => void;
   onNew: () => void;
   isExporting: boolean;
+  isImporting: boolean;
 }
 
 const statuses: LeadStatus[] = ['New', 'Contacted', 'Qualified', 'Lost'];
@@ -24,9 +27,21 @@ export function FiltersBar({
   onSearchChange,
   onFilterChange,
   onExport,
+  onImport,
   onNew,
   isExporting,
+  isImporting,
 }: FiltersBarProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      onImport(file);
+      e.target.value = '';
+    }
+  };
+
   return (
     <div className="p-4 border-b border-slate-100 dark:border-slate-800">
       <div className="flex flex-wrap gap-3 items-center">
@@ -76,6 +91,24 @@ export function FiltersBar({
 
         {/* Actions */}
         <div className="flex items-center gap-2 ml-auto">
+          {/* Hidden file input */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".csv"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+          <Button
+            variant="secondary"
+            onClick={() => fileInputRef.current?.click()}
+            isLoading={isImporting}
+            className="gap-1.5"
+            title="Import leads from CSV"
+          >
+            <Upload className="w-4 h-4" />
+            <span className="hidden sm:inline">Import CSV</span>
+          </Button>
           <Button
             variant="secondary"
             onClick={onExport}

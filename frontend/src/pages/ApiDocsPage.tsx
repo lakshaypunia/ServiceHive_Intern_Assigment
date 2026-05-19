@@ -284,6 +284,27 @@ Priya Sharma,priya@startup.io,Qualified,Instagram,Lakshay Punia,2025-01-15`,
 }`,
     responseCode: 200,
   },
+  {
+    id: 'leads-import',
+    method: 'POST',
+    path: '/api/leads/import',
+    summary: 'Import leads in bulk from a CSV file. The CSV must include Name, Email, and Source columns. Status defaults to "New" if omitted or invalid. Each imported lead is assigned to the authenticated user.',
+    auth: true,
+    body: `Name,Email,Status,Source
+Priya Sharma,priya@startup.io,Qualified,Instagram
+Rahul Gupta,rahul@techco.com,New,Website
+Neha Kapoor,neha@agency.co,Contacted,Referral`,
+    response: `{
+  "success": true,
+  "message": "Imported 3 lead(s)",
+  "data": {
+    "imported": 3,
+    "failed": 0,
+    "errors": []
+  }
+}`,
+    responseCode: 200,
+  },
 ];
 
 const SECTIONS: Section[] = [
@@ -433,8 +454,13 @@ function EndpointCard({ ep }: { ep: Endpoint }) {
 
           {ep.body && (
             <div className="space-y-2">
-              <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Request Body</p>
-              <CodeBlock code={ep.body} label="JSON" />
+              <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                Request Body
+                {ep.id === 'leads-import' && (
+                  <span className="ml-2 normal-case text-slate-400 dark:text-slate-500 font-normal">Content-Type: text/csv</span>
+                )}
+              </p>
+              <CodeBlock code={ep.body} label={ep.id === 'leads-import' ? 'CSV' : 'JSON'} />
             </div>
           )}
 

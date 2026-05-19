@@ -6,6 +6,7 @@ import {
   updateLead,
   deleteLead,
   exportLeadsCSV,
+  importLeadsCSV,
   getLeadsStats,
 } from '../controllers/lead.controller';
 import { authenticate } from '../middleware/auth.middleware';
@@ -18,6 +19,7 @@ router.use(authenticate);
 // Static routes MUST come before /:id
 router.get('/stats', getLeadsStats);
 router.get('/export', exportLeadsCSV);
+router.post('/import', importLeadsCSV);
 
 router.get('/', getLeads);
 router.post('/', createLead);

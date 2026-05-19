@@ -32,6 +32,26 @@ const buildFilter = (
 
 const escapeCsv = (value: string): string => `"${value.replace(/"/g, '""')}"`;
 
+function parseCSVLine(line: string): string[] {
+  const result: string[] = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i]!;
+    if (char === '"') {
+      if (inQuotes && line[i + 1] === '"') { current += '"'; i++; }
+      else inQuotes = !inQuotes;
+    } else if (char === ',' && !inQuotes) {
+      result.push(current); current = '';
+    } else {
+      current += char;
+    }
+  }
+  result.push(current);
+  return result;
+}
+
+
 export const createLead = async (req: Request, res: Response): Promise<void> => {
   try {
     const parsed = createLeadSchema.parse(req.body);
@@ -161,6 +181,80 @@ export const getLeadsStats = async (req: Request, res: Response): Promise<void> 
     sendSuccess(res, stats, 'Stats fetched');
   } catch {
     sendError(res, 'Failed to fetch stats');
+  }
+};
+
+export const importLeadsCSV = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const csv = req.body as string;
+    if (!csv || typeof csv !== 'string' || !csv.trim()) {
+      sendError(res, 'No CSV data provided', 400);
+      return;
+    }
+
+    const lines = csv.split(/\r?\n/).filter((l) => l.trim());
+    if (lines.length < 2) {
+      sendError(res, 'CSV must have a header row and at least one data row', 400);
+      return;
+    }
+
+    const headers = parseCSVLine(lines[0]!).map((h) => h.toLowerCase().trim());
+    const nameIdx = headers.indexOf('name');
+    const emailIdx = headers.indexOf('email');
+    const statusIdx = headers.indexOf('status');
+    const sourceIdx = headers.indexOf('source');
+
+    if (nameIdx === -1 || emailIdx === -1 || sourceIdx === -1) {
+      sendError(res, 'CSV must include Name, Email, and Source columns', 400);
+      return;
+    }
+
+    const VALID_STATUSES = ['New', 'Contacted', 'Qualified', 'Lost'];
+    const VALID_SOURCES = ['Website', 'Instagram', 'Referral'];
+
+    let imported = 0;
+    let failed = 0;
+    const errors: string[] = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const fields = parseCSVLine(lines[i]!.trim());
+      const name = fields[nameIdx]?.trim() ?? '';
+      const email = fields[emailIdx]?.trim().toLowerCase() ?? '';
+      const rawStatus = fields[statusIdx]?.trim() ?? 'New';
+      const source = fields[sourceIdx]?.trim() ?? '';
+
+      const status = VALID_STATUSES.includes(rawStatus) ? rawStatus : 'New';
+
+      if (!name || !email || !source) {
+        failed++;
+        errors.push(`Row ${i + 1}: missing Name, Email, or Source`);
+        continue;
+      }
+      if (!VALID_SOURCES.includes(source)) {
+        failed++;
+        errors.push(`Row ${i + 1}: invalid source "${source}" — must be Website, Instagram, or Referral`);
+        continue;
+      }
+
+      try {
+        await Lead.create({
+          name,
+          email,
+          status: status as 'New' | 'Contacted' | 'Qualified' | 'Lost',
+          source: source as 'Website' | 'Instagram' | 'Referral',
+          createdBy: req.user!._id,
+        });
+        imported++;
+      } catch (err: unknown) {
+        failed++;
+        errors.push(`Row ${i + 1}: ${err instanceof Error ? err.message : 'Failed to save'}`);
+      }
+    }
+
+    sendSuccess(res, { imported, failed, errors: errors.slice(0, 20) },
+      `Imported ${imported} lead(s)${failed ? `, ${failed} skipped` : ''}`);
+  } catch {
+    sendError(res, 'Failed to import CSV');
   }
 };
 

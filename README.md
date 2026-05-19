@@ -27,9 +27,12 @@ A full-stack Lead Management Dashboard built with the MERN stack. Manage your sa
 - **Docker Setup** — Multi-stage Dockerfiles for backend and frontend, `docker-compose.yml` with MongoDB
 
 ### Bonus
+- **CSV Import** — Bulk import leads from a `.csv` file with per-row validation and a result summary banner
+- **Dark Mode** — System-preference aware, persisted to localStorage, toggle in navbar
 - **Dark-themed Auth Panel** — Glassmorphism lead preview cards on the login/register left panel
 - **Live Stats Cards** — Total, New, Qualified, Lost lead counts via aggregation endpoint
 - **Relative Timestamps** — "2m ago", "3h ago" style in the leads table
+- **Interactive API Docs** — Full API reference at `/apidocs`
 
 ---
 
@@ -402,6 +405,23 @@ Delete a lead. **Admin only.**
 
 ---
 
+#### `POST /api/leads/import` 🔒
+Bulk import leads from a CSV file. Requires `Content-Type: text/csv`. Columns: `Name`, `Email`, `Source` (required), `Status` (optional, defaults to `New`).
+
+**Body** — raw CSV text
+```csv
+Name,Email,Status,Source
+Priya Sharma,priya@startup.io,Qualified,Instagram
+Rahul Gupta,rahul@techco.com,New,Website
+```
+
+**Response `200`**
+```json
+{ "success": true, "message": "Imported 2 lead(s)", "data": { "imported": 2, "failed": 0, "errors": [] } }
+```
+
+---
+
 ### Error Responses
 
 ```json
@@ -440,7 +460,4 @@ npm run lint     # ESLint
 
 ## Author
 
-**Lakshay Punia**
-- Email: lakshaydiwan002@gmail.com
-- Assignment: MERN Stack Internship — Smart Leads Dashboard
-- Submission to: ritik.yadav@servicehive.tech
+**Lakshay Punia** — MERN Stack Internship Assignment

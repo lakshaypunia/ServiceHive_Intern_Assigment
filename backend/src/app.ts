@@ -13,6 +13,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(express.text({ type: 'text/csv', limit: '5mb' }));
 
 app.get('/api/health', (_req, res) => {
   res.json({ success: true, message: 'Server is running' });

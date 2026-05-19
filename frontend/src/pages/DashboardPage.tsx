@@ -5,8 +5,8 @@ import { Users, Sparkles, CheckCircle2, XCircle, ChevronLeft, ChevronRight } fro
 import type { LucideIcon } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useDebounce } from '../hooks/useDebounce';
-import { getLeadsApi, createLeadApi, updateLeadApi, deleteLeadApi, exportLeadsApi, getLeadsStatsApi } from '../api/leads.api';
-import type { CreateLeadPayload, UpdateLeadPayload } from '../api/leads.api';
+import { getLeadsApi, createLeadApi, updateLeadApi, deleteLeadApi, exportLeadsApi, getLeadsStatsApi, importLeadsApi } from '../api/leads.api';
+import type { CreateLeadPayload, UpdateLeadPayload, ImportResult } from '../api/leads.api';
 import type { Lead, LeadFilters } from '../types';
 import { Navbar } from '../components/layout/Navbar';
 import { FiltersBar } from '../components/leads/FiltersBar';
@@ -136,6 +136,8 @@ export default function DashboardPage() {
   const [deletingLead, setDeletingLead] = useState<Lead | null>(null);
   const [viewingLead, setViewingLead] = useState<Lead | null>(null);
   const [isExporting, setIsExporting] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
+  const [importResult, setImportResult] = useState<ImportResult & { show: boolean } | null>(null);
 
   useEffect(() => {
     setFilters((f) => ({ ...f, search: debouncedSearch || undefined, page: 1 }));
@@ -173,6 +175,23 @@ export default function DashboardPage() {
     mutationFn: deleteLeadApi,
     onSuccess: () => { invalidate(); setDeletingLead(null); },
   });
+
+  const handleImport = async (file: File) => {
+    setIsImporting(true);
+    try {
+      const text = await file.text();
+      const res = await importLeadsApi(text);
+      const result = res.data.data!;
+      setImportResult({ ...result, show: true });
+      invalidate();
+      setTimeout(() => setImportResult(null), 6000);
+    } catch {
+      setImportResult({ imported: 0, failed: 1, errors: ['Import failed — check file format.'], show: true });
+      setTimeout(() => setImportResult(null), 6000);
+    } finally {
+      setIsImporting(false);
+    }
+  };
 
   const handleExport = async () => {
     setIsExporting(true);
@@ -255,9 +274,36 @@ export default function DashboardPage() {
             onSearchChange={setSearch}
             onFilterChange={handleFilterChange}
             onExport={() => void handleExport()}
+            onImport={(file) => void handleImport(file)}
             onNew={() => setCreateOpen(true)}
             isExporting={isExporting}
+            isImporting={isImporting}
           />
+
+          {/* Import result banner */}
+          {importResult && (
+            <div className={`mx-6 mt-4 p-3.5 rounded-xl border flex items-start justify-between gap-3 text-sm ${
+              importResult.failed === 0
+                ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300'
+                : importResult.imported === 0
+                ? 'bg-rose-50 dark:bg-rose-900/20 border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-300'
+                : 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300'
+            }`}>
+              <div>
+                <p className="font-semibold">
+                  {importResult.imported > 0 ? `✓ ${importResult.imported} lead${importResult.imported !== 1 ? 's' : ''} imported` : ''}
+                  {importResult.failed > 0 ? `${importResult.imported > 0 ? ' · ' : ''}${importResult.failed} skipped` : ''}
+                </p>
+                {importResult.errors.length > 0 && (
+                  <ul className="mt-1 space-y-0.5 text-xs opacity-80">
+                    {importResult.errors.slice(0, 3).map((e, i) => <li key={i}>• {e}</li>)}
+                    {importResult.errors.length > 3 && <li>• and {importResult.errors.length - 3} more…</li>}
+                  </ul>
+                )}
+              </div>
+              <button onClick={() => setImportResult(null)} className="opacity-60 hover:opacity-100 transition-opacity flex-shrink-0">✕</button>
+            </div>
+          )}
 
           {/* Table / states */}
           {leadsQuery.isLoading ? (

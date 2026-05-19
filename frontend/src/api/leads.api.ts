@@ -35,3 +35,14 @@ export const exportLeadsApi = (filters: Omit<LeadFilters, 'page'> = {}) =>
 
 export const getLeadsStatsApi = () =>
   api.get<ApiResponse<Record<string, number>>>('/leads/stats');
+
+export interface ImportResult {
+  imported: number;
+  failed: number;
+  errors: string[];
+}
+
+export const importLeadsApi = (csvText: string) =>
+  api.post<ApiResponse<ImportResult>>('/leads/import', csvText, {
+    headers: { 'Content-Type': 'text/csv' },
+  });
