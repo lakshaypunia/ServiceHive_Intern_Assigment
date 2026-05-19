@@ -14,6 +14,7 @@ import { LeadsTable } from '../components/leads/LeadsTable';
 import { CreateLeadModal } from '../components/leads/CreateLeadModal';
 import { EditLeadModal } from '../components/leads/EditLeadModal';
 import { DeleteConfirmDialog } from '../components/leads/DeleteConfirmDialog';
+import { LeadDetailModal } from '../components/leads/LeadDetailModal';
 import { EmptyState } from '../components/ui/EmptyState';
 import { TableSkeleton, StatsSkeleton } from '../components/ui/Skeleton';
 
@@ -30,14 +31,14 @@ interface StatCardProps {
   label: string;
   value: number | string;
   icon: LucideIcon;
-  colorClasses: { ring: string; bg: string; icon: string; value: string };
+  colorClasses: { bg: string; icon: string; value: string };
 }
 
 function StatCard({ label, value, icon: Icon, colorClasses }: StatCardProps) {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center justify-between gap-4">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 flex items-center justify-between gap-4">
       <div>
-        <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">{label}</p>
+        <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">{label}</p>
         <p className={`text-3xl font-extrabold mt-1 ${colorClasses.value}`}>{value}</p>
       </div>
       <div className={`w-12 h-12 ${colorClasses.bg} rounded-xl flex items-center justify-center flex-shrink-0`}>
@@ -48,10 +49,10 @@ function StatCard({ label, value, icon: Icon, colorClasses }: StatCardProps) {
 }
 
 const STAT_CONFIGS = [
-  { key: 'total', label: 'Total Leads', icon: Users, colorClasses: { ring: 'ring-violet-200', bg: 'bg-violet-50', icon: 'text-violet-600', value: 'text-slate-900' } },
-  { key: 'New', label: 'New', icon: Sparkles, colorClasses: { ring: 'ring-blue-200', bg: 'bg-blue-50', icon: 'text-blue-500', value: 'text-slate-900' } },
-  { key: 'Qualified', label: 'Qualified', icon: CheckCircle2, colorClasses: { ring: 'ring-emerald-200', bg: 'bg-emerald-50', icon: 'text-emerald-500', value: 'text-slate-900' } },
-  { key: 'Lost', label: 'Lost', icon: XCircle, colorClasses: { ring: 'ring-rose-200', bg: 'bg-rose-50', icon: 'text-rose-500', value: 'text-slate-900' } },
+  { key: 'total', label: 'Total Leads', icon: Users, colorClasses: { bg: 'bg-violet-50 dark:bg-violet-900/30', icon: 'text-violet-600 dark:text-violet-400', value: 'text-slate-900 dark:text-white' } },
+  { key: 'New', label: 'New', icon: Sparkles, colorClasses: { bg: 'bg-blue-50 dark:bg-blue-900/30', icon: 'text-blue-500 dark:text-blue-400', value: 'text-slate-900 dark:text-white' } },
+  { key: 'Qualified', label: 'Qualified', icon: CheckCircle2, colorClasses: { bg: 'bg-emerald-50 dark:bg-emerald-900/30', icon: 'text-emerald-500 dark:text-emerald-400', value: 'text-slate-900 dark:text-white' } },
+  { key: 'Lost', label: 'Lost', icon: XCircle, colorClasses: { bg: 'bg-rose-50 dark:bg-rose-900/30', icon: 'text-rose-500 dark:text-rose-400', value: 'text-slate-900 dark:text-white' } },
 ] as const;
 
 /* ─── Pagination ──────────────────────────────── */
@@ -68,16 +69,16 @@ function Pagination({ page, totalPages, total, limit, onChange }: PaginationProp
   const to = Math.min(page * limit, total);
 
   return (
-    <div className="px-6 py-4 border-t border-slate-100 flex items-center justify-between">
-      <p className="text-sm text-slate-500">
-        Showing <span className="font-medium text-slate-900">{from}–{to}</span> of{' '}
-        <span className="font-medium text-slate-900">{total}</span> leads
+    <div className="px-6 py-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+      <p className="text-sm text-slate-500 dark:text-slate-400">
+        Showing <span className="font-medium text-slate-900 dark:text-white">{from}–{to}</span> of{' '}
+        <span className="font-medium text-slate-900 dark:text-white">{total}</span> leads
       </p>
       <div className="flex items-center gap-1">
         <button
           onClick={() => onChange(page - 1)}
           disabled={page <= 1}
-          className="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
@@ -92,7 +93,7 @@ function Pagination({ page, totalPages, total, limit, onChange }: PaginationProp
           }, [])
           .map((p, i) =>
             p === '…' ? (
-              <span key={`e-${i}`} className="w-8 h-8 flex items-center justify-center text-slate-400 text-sm">…</span>
+              <span key={`e-${i}`} className="w-8 h-8 flex items-center justify-center text-slate-400 dark:text-slate-500 text-sm">…</span>
             ) : (
               <button
                 key={p}
@@ -100,7 +101,7 @@ function Pagination({ page, totalPages, total, limit, onChange }: PaginationProp
                 className={`w-8 h-8 flex items-center justify-center rounded-lg text-sm font-medium transition-colors ${
                   p === page
                     ? 'bg-violet-600 text-white'
-                    : 'border border-slate-200 text-slate-600 hover:bg-slate-50'
+                    : 'border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
               >
                 {p}
@@ -111,7 +112,7 @@ function Pagination({ page, totalPages, total, limit, onChange }: PaginationProp
         <button
           onClick={() => onChange(page + 1)}
           disabled={page >= totalPages}
-          className="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
@@ -133,6 +134,7 @@ export default function DashboardPage() {
   const [createOpen, setCreateOpen] = useState(false);
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
   const [deletingLead, setDeletingLead] = useState<Lead | null>(null);
+  const [viewingLead, setViewingLead] = useState<Lead | null>(null);
   const [isExporting, setIsExporting] = useState(false);
 
   useEffect(() => {
@@ -201,17 +203,17 @@ export default function DashboardPage() {
   const stats = statsQuery.data?.data;
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <Navbar user={user} onLogout={() => { logout(); navigate('/login', { replace: true }); }} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         {/* Greeting */}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
               {getGreeting()}, {user?.name.split(' ')[0] ?? 'there'} 👋
             </h1>
-            <p className="text-slate-500 text-sm mt-1">Here's what's happening with your leads.</p>
+            <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Here's what's happening with your leads.</p>
           </div>
         </div>
 
@@ -233,13 +235,13 @@ export default function DashboardPage() {
         )}
 
         {/* Leads card */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <h2 className="text-base font-semibold text-slate-900">Leads</h2>
+              <h2 className="text-base font-semibold text-slate-900 dark:text-white">Leads</h2>
               {meta && (
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
                   {meta.total}
                 </span>
               )}
@@ -262,10 +264,10 @@ export default function DashboardPage() {
             <TableSkeleton />
           ) : leadsQuery.isError ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
-              <p className="text-slate-500 text-sm">Failed to load leads.</p>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">Failed to load leads.</p>
               <button
                 onClick={() => void leadsQuery.refetch()}
-                className="mt-3 text-violet-600 text-sm font-medium hover:underline"
+                className="mt-3 text-violet-600 dark:text-violet-400 text-sm font-medium hover:underline"
               >
                 Try again
               </button>
@@ -285,6 +287,7 @@ export default function DashboardPage() {
               isAdmin={isAdmin}
               onEdit={setEditingLead}
               onDelete={setDeletingLead}
+              onView={setViewingLead}
             />
           )}
 
@@ -319,6 +322,12 @@ export default function DashboardPage() {
         onClose={() => setDeletingLead(null)}
         onConfirm={(id) => deleteMutation.mutate(id)}
         isPending={deleteMutation.isPending}
+      />
+      <LeadDetailModal
+        lead={viewingLead}
+        isAdmin={isAdmin}
+        onClose={() => setViewingLead(null)}
+        onEdit={setEditingLead}
       />
     </div>
   );

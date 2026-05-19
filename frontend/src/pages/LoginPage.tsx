@@ -41,7 +41,7 @@ export default function LoginPage() {
   });
 
   return (
-    <div className="min-h-screen flex bg-white">
+    <div className="min-h-screen flex bg-white dark:bg-slate-950">
       {/* ── Left panel ── */}
       <div className="hidden lg:flex lg:w-[42%] bg-gradient-to-br from-violet-600 via-violet-700 to-indigo-800 flex-col justify-between p-12 relative overflow-hidden">
         {/* Background texture */}
@@ -95,24 +95,24 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <p className="relative z-10 text-violet-400/50 text-xs">© 2025 Smart Leads</p>
+        <p className="relative z-10 text-violet-400/50 text-xs">© 2026 Smart Leads</p>
       </div>
 
       {/* ── Right form panel ── */}
-      <div className="w-full lg:w-[58%] flex items-center justify-center p-6 sm:p-12 bg-slate-50">
+      <div className="w-full lg:w-[58%] flex items-center justify-center p-6 sm:p-12 bg-slate-50 dark:bg-slate-950">
         <div className="w-full max-w-md">
           {/* Mobile logo */}
           <div className="flex items-center gap-2.5 mb-10 lg:hidden">
             <div className="w-9 h-9 bg-violet-600 rounded-xl flex items-center justify-center">
               <TrendingUp className="w-5 h-5 text-white" />
             </div>
-            <span className="text-slate-900 text-lg font-bold">Smart Leads</span>
+            <span className="text-slate-900 dark:text-white text-lg font-bold">Smart Leads</span>
           </div>
 
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-8">
             <div className="mb-8">
-              <h2 className="text-2xl font-bold text-slate-900">Welcome back</h2>
-              <p className="mt-1.5 text-slate-500 text-sm">Sign in to your account to continue</p>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Welcome back</h2>
+              <p className="mt-1.5 text-slate-500 dark:text-slate-400 text-sm">Sign in to your account to continue</p>
             </div>
 
             <form onSubmit={handleSubmit((d) => mutate(d))} noValidate className="space-y-4">
@@ -142,7 +142,7 @@ export default function LoginPage() {
               />
 
               {errors.root && (
-                <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-sm text-rose-700">
+                <div className="p-3 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-xl text-sm text-rose-700 dark:text-rose-400">
                   {errors.root.message}
                 </div>
               )}
@@ -152,7 +152,7 @@ export default function LoginPage() {
               </Button>
             </form>
 
-            <p className="mt-6 text-center text-sm text-slate-500">
+            <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
               Don't have an account?{' '}
               <Link to="/register" className="font-semibold text-violet-600 hover:text-violet-700 transition-colors">
                 Create one free

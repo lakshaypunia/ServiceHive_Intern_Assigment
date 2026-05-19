@@ -5,6 +5,7 @@ import PublicOnlyRoute from './components/PublicOnlyRoute';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
+import ApiDocsPage from './pages/ApiDocsPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<DashboardPage />} />
           </Route>
+          <Route path="/apidocs" element={<ApiDocsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>

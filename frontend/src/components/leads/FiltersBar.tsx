@@ -15,6 +15,9 @@ interface FiltersBarProps {
 const statuses: LeadStatus[] = ['New', 'Contacted', 'Qualified', 'Lost'];
 const sources: LeadSource[] = ['Website', 'Instagram', 'Referral'];
 
+const selectClass =
+  'text-sm bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer';
+
 export function FiltersBar({
   search,
   filters,
@@ -25,28 +28,28 @@ export function FiltersBar({
   isExporting,
 }: FiltersBarProps) {
   return (
-    <div className="p-4 border-b border-slate-100">
+    <div className="p-4 border-b border-slate-100 dark:border-slate-800">
       <div className="flex flex-wrap gap-3 items-center">
         {/* Search */}
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500 pointer-events-none" />
           <input
             type="text"
             placeholder="Search by name or email…"
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent focus:bg-white transition-all placeholder-slate-400"
+            className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent focus:bg-white dark:focus:bg-slate-700 transition-all placeholder-slate-400 dark:placeholder-slate-500"
           />
         </div>
 
         {/* Filters group */}
         <div className="flex items-center gap-2">
-          <SlidersHorizontal className="w-4 h-4 text-slate-400 hidden sm:block" />
+          <SlidersHorizontal className="w-4 h-4 text-slate-400 dark:text-slate-500 hidden sm:block" />
 
           <select
             value={filters.status ?? ''}
             onChange={(e) => onFilterChange('status', e.target.value as LeadStatus || undefined)}
-            className="text-sm bg-white border border-slate-200 text-slate-700 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer"
+            className={selectClass}
           >
             <option value="">All statuses</option>
             {statuses.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -55,7 +58,7 @@ export function FiltersBar({
           <select
             value={filters.source ?? ''}
             onChange={(e) => onFilterChange('source', e.target.value as LeadSource || undefined)}
-            className="text-sm bg-white border border-slate-200 text-slate-700 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer"
+            className={selectClass}
           >
             <option value="">All sources</option>
             {sources.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -64,7 +67,7 @@ export function FiltersBar({
           <select
             value={filters.sort ?? 'latest'}
             onChange={(e) => onFilterChange('sort', e.target.value)}
-            className="text-sm bg-white border border-slate-200 text-slate-700 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer"
+            className={selectClass}
           >
             <option value="latest">Newest first</option>
             <option value="oldest">Oldest first</option>

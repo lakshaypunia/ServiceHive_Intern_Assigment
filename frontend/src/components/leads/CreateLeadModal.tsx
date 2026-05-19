@@ -21,7 +21,9 @@ interface CreateLeadModalProps {
 }
 
 const selectClass =
-  'w-full px-3 py-2.5 text-sm border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent hover:border-slate-400 transition-colors';
+  'w-full px-3 py-2.5 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent hover:border-slate-400 dark:hover:border-slate-500 transition-colors';
+
+const labelClass = 'block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5';
 
 export function CreateLeadModal({ isOpen, onClose, onSubmit, isPending }: CreateLeadModalProps) {
   const {
@@ -63,7 +65,7 @@ export function CreateLeadModal({ isOpen, onClose, onSubmit, isPending }: Create
 
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Status</label>
+            <label className={labelClass}>Status</label>
             <select {...register('status')} className={selectClass}>
               <option value="New">New</option>
               <option value="Contacted">Contacted</option>
@@ -72,7 +74,7 @@ export function CreateLeadModal({ isOpen, onClose, onSubmit, isPending }: Create
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Source</label>
+            <label className={labelClass}>Source</label>
             <select
               {...register('source', { required: true })}
               className={selectClass}
@@ -83,7 +85,7 @@ export function CreateLeadModal({ isOpen, onClose, onSubmit, isPending }: Create
               <option value="Instagram">Instagram</option>
               <option value="Referral">Referral</option>
             </select>
-            {errors.source && <p className="mt-1 text-xs text-red-600">Source is required</p>}
+            {errors.source && <p className="mt-1 text-xs text-red-600 dark:text-red-400">Source is required</p>}
           </div>
         </div>
 

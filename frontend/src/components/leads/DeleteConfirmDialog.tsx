@@ -15,13 +15,13 @@ export function DeleteConfirmDialog({ lead, onClose, onConfirm, isPending }: Del
     <Modal isOpen={!!lead} onClose={onClose} title="Delete lead" size="sm">
       <div className="space-y-5">
         <div className="flex items-start gap-4">
-          <div className="flex-shrink-0 w-10 h-10 bg-rose-50 rounded-xl flex items-center justify-center">
-            <AlertTriangle className="w-5 h-5 text-rose-600" />
+          <div className="flex-shrink-0 w-10 h-10 bg-rose-50 dark:bg-rose-900/30 rounded-xl flex items-center justify-center">
+            <AlertTriangle className="w-5 h-5 text-rose-600 dark:text-rose-400" />
           </div>
           <div>
-            <p className="text-sm text-slate-700">
+            <p className="text-sm text-slate-700 dark:text-slate-300">
               Are you sure you want to delete{' '}
-              <span className="font-semibold text-slate-900">{lead?.name}</span>?
+              <span className="font-semibold text-slate-900 dark:text-white">{lead?.name}</span>?
               This action cannot be undone.
             </p>
           </div>

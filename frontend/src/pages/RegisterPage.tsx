@@ -44,7 +44,7 @@ export default function RegisterPage() {
   });
 
   return (
-    <div className="min-h-screen flex bg-white">
+    <div className="min-h-screen flex bg-white dark:bg-slate-950">
       {/* ── Left panel ── */}
       <div className="hidden lg:flex lg:w-[42%] bg-gradient-to-br from-violet-600 via-violet-700 to-indigo-800 flex-col justify-between p-12 relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.07]"
@@ -87,24 +87,24 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        <p className="relative z-10 text-violet-400/50 text-xs">© 2025 Smart Leads</p>
+        <p className="relative z-10 text-violet-400/50 text-xs">© 2026 Smart Leads</p>
       </div>
 
       {/* ── Right form panel ── */}
-      <div className="w-full lg:w-[58%] flex items-center justify-center p-6 sm:p-12 bg-slate-50 overflow-y-auto">
+      <div className="w-full lg:w-[58%] flex items-center justify-center p-6 sm:p-12 bg-slate-50 dark:bg-slate-950 overflow-y-auto">
         <div className="w-full max-w-md">
           {/* Mobile logo */}
           <div className="flex items-center gap-2.5 mb-10 lg:hidden">
             <div className="w-9 h-9 bg-violet-600 rounded-xl flex items-center justify-center">
               <TrendingUp className="w-5 h-5 text-white" />
             </div>
-            <span className="text-slate-900 text-lg font-bold">Smart Leads</span>
+            <span className="text-slate-900 dark:text-white text-lg font-bold">Smart Leads</span>
           </div>
 
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-8">
             <div className="mb-8">
-              <h2 className="text-2xl font-bold text-slate-900">Create your account</h2>
-              <p className="mt-1.5 text-slate-500 text-sm">Get started in less than a minute</p>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Create your account</h2>
+              <p className="mt-1.5 text-slate-500 dark:text-slate-400 text-sm">Get started in less than a minute</p>
             </div>
 
             <form onSubmit={handleSubmit((d) => mutate(d))} noValidate className="space-y-4">
@@ -147,7 +147,7 @@ export default function RegisterPage() {
 
               {/* Role selector */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Account type</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Account type</label>
                 <div className="grid grid-cols-2 gap-3">
                   {roles.map(({ value, label, desc, icon: Icon }) => {
                     const active = selectedRole === value;
@@ -156,18 +156,18 @@ export default function RegisterPage() {
                         key={value}
                         className={`relative cursor-pointer rounded-xl border-2 p-4 transition-all duration-150 ${
                           active
-                            ? 'border-violet-600 bg-violet-50'
-                            : 'border-slate-200 bg-white hover:border-slate-300'
+                            ? 'border-violet-600 bg-violet-50 dark:bg-violet-900/20'
+                            : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600'
                         }`}
                       >
                         <input type="radio" value={value} className="sr-only" {...register('role')} />
                         <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-3 transition-colors ${
-                          active ? 'bg-violet-600' : 'bg-slate-100'
+                          active ? 'bg-violet-600' : 'bg-slate-100 dark:bg-slate-700'
                         }`}>
-                          <Icon className={`w-4 h-4 ${active ? 'text-white' : 'text-slate-500'}`} />
+                          <Icon className={`w-4 h-4 ${active ? 'text-white' : 'text-slate-500 dark:text-slate-400'}`} />
                         </div>
-                        <p className="text-sm font-semibold text-slate-900">{label}</p>
-                        <p className="text-xs text-slate-500 mt-0.5">{desc}</p>
+                        <p className="text-sm font-semibold text-slate-900 dark:text-white">{label}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{desc}</p>
                         {active && (
                           <div className="absolute top-3 right-3 w-5 h-5 bg-violet-600 rounded-full flex items-center justify-center">
                             <svg className="w-3 h-3 text-white" viewBox="0 0 12 12" fill="none">
@@ -182,7 +182,7 @@ export default function RegisterPage() {
               </div>
 
               {errors.root && (
-                <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-sm text-rose-700">
+                <div className="p-3 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-xl text-sm text-rose-700 dark:text-rose-400">
                   {errors.root.message}
                 </div>
               )}
@@ -192,7 +192,7 @@ export default function RegisterPage() {
               </Button>
             </form>
 
-            <p className="mt-6 text-center text-sm text-slate-500">
+            <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
               Already have an account?{' '}
               <Link to="/login" className="font-semibold text-violet-600 hover:text-violet-700 transition-colors">
                 Sign in
