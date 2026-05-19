@@ -2,6 +2,14 @@
 
 A full-stack Lead Management Dashboard built with the MERN stack. Manage your sales pipeline with role-based access control, advanced filtering, real-time search, and CSV export.
 
+## Live Demo
+
+| | URL |
+|---|---|
+| **Frontend** | https://service-hive-intern-assigmentfronte.vercel.app |
+| **API Docs** | https://service-hive-intern-assigmentfronte.vercel.app/apidocs |
+| **Backend API** | https://service-hive-intern-assigmentbacken.vercel.app |
+
 ---
 
 ## Features
@@ -202,7 +210,7 @@ docker-compose down -v
 
 ## API Documentation
 
-> **Interactive API Docs** — visit [`http://localhost:5173/apidocs`](http://localhost:5173/apidocs) (or [`http://localhost/apidocs`](http://localhost/apidocs) via Docker) for a beautifully rendered, interactive version of this documentation directly in the app.
+> **Interactive API Docs** — visit [`https://service-hive-intern-assigmentfronte.vercel.app/apidocs`](https://service-hive-intern-assigmentfronte.vercel.app/apidocs) (or `http://localhost:5173/apidocs` locally / `http://localhost/apidocs` via Docker) for a beautifully rendered, interactive version of this documentation directly in the app.
 
 All protected endpoints require the header:
 ```

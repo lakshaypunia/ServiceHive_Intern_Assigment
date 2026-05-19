@@ -33,7 +33,7 @@ interface Section {
 }
 
 /* ─── Data ────────────────────────────────────── */
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = 'https://service-hive-intern-assigmentbacken.vercel.app';
 
 const STANDARD_RESPONSE = `{
   "success": true,
