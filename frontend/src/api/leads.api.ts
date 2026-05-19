@@ -32,3 +32,6 @@ export const deleteLeadApi = (id: string) =>
 
 export const exportLeadsApi = (filters: Omit<LeadFilters, 'page'> = {}) =>
   api.get('/leads/export', { params: filters, responseType: 'blob' });
+
+export const getLeadsStatsApi = () =>
+  api.get<ApiResponse<Record<string, number>>>('/leads/stats');

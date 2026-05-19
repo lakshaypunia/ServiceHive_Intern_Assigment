@@ -6,6 +6,7 @@ import {
   updateLead,
   deleteLead,
   exportLeadsCSV,
+  getLeadsStats,
 } from '../controllers/lead.controller';
 import { authenticate } from '../middleware/auth.middleware';
 import { requireAdmin } from '../middleware/role.middleware';
@@ -14,7 +15,8 @@ const router = Router();
 
 router.use(authenticate);
 
-// /export MUST be registered before /:id so Express doesn't treat "export" as an ID
+// Static routes MUST come before /:id
+router.get('/stats', getLeadsStats);
 router.get('/export', exportLeadsCSV);
 
 router.get('/', getLeads);

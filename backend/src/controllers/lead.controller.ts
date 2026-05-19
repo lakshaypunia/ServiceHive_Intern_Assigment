@@ -140,6 +140,30 @@ export const deleteLead = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
+export const getLeadsStats = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const isAdmin = req.user!.role === 'admin';
+    const baseFilter = isAdmin ? {} : { createdBy: new mongoose.Types.ObjectId(req.user!._id) };
+
+    const [total, byStatus] = await Promise.all([
+      Lead.countDocuments(baseFilter),
+      Lead.aggregate<{ _id: string; count: number }>([
+        { $match: baseFilter },
+        { $group: { _id: '$status', count: { $sum: 1 } } },
+      ]),
+    ]);
+
+    const stats: Record<string, number> = { total, New: 0, Contacted: 0, Qualified: 0, Lost: 0 };
+    for (const s of byStatus) {
+      if (s._id in stats) stats[s._id] = s.count;
+    }
+
+    sendSuccess(res, stats, 'Stats fetched');
+  } catch {
+    sendError(res, 'Failed to fetch stats');
+  }
+};
+
 export const exportLeadsCSV = async (req: Request, res: Response): Promise<void> => {
   try {
     const query = leadQuerySchema.parse(req.query);
