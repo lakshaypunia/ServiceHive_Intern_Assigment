@@ -1,0 +1,150 @@
+Full Stack Internship Assignment
+Project: Smart Leads Dashboard
+Objective
+Build a full-stack Lead Management Dashboard using the MERN stack with clean architecture, scalable code practices,
+and a professional user experience.
+The purpose of this assignment is to evaluate:
+● Frontend development skills
+● Backend/API design
+● Database modeling
+● State management
+● Code quality
+● Problem-solving ability
+● Real-world engineering practices
+Technical Requirements
+Mandatory Tech Stack
+Frontend
+● React.js
+● TypeScript (mandatory)
+● TailwindCSS
+Backend
+● Node.js
+● Express.js
+● TypeScript (mandatory)
+● MongoDB + Mongoose
+Important Note
+● Plain JavaScript submissions will be rejected
+● Proper TypeScript usage is mandatory
+● Interfaces/types should be properly defined
+● Usage of any should be minimized and justified where necessary
+Core Features
+1. Authentication System
+Implement JWT-based authentication.
+Features
+● User Registration
+● User Login
+● Protected Routes
+● Password Hashing using bcrypt
+● Auth Middleware
+Expectations
+● Secure authentication flow
+● Proper token handling
+● Clean middleware structure
+● Validation and error handling
+2. Leads Management (CRUD)
+Create a Lead Management module.
+Lead Fields
+● Name
+● Email
+● Status
+○ New
+○ Contacted
+○ Qualified
+○ Lost
+● Source
+○ Website
+○ Instagram
+○ Referral
+● Created At
+Functionalities
+● Create Lead
+● Update Lead
+● Delete Lead
+● View Leads List
+● View Single Lead Details
+3. Advanced Filtering & Search
+This is one of the most important parts of the assignment.
+Required Filters
+● Filter by Status
+● Filter by Source
+● Search by Name or Email
+● Sort by:
+○ Latest
+○ Oldest
+Important
+Multiple filters should work together.
+Example
+● Status = Qualified
+● Source = Instagram
+● Search = "Rahul"
+4. Pagination
+Requirements
+● Backend pagination is mandatory
+● Limit: 10 records per page
+Expected Implementation
+● Proper use of skip and limit
+● Pagination metadata in API response
+5. Frontend UI Requirements
+Build a clean and responsive dashboard UI.
+Mandatory UI Expectations
+● Responsive Design
+● Reusable Components
+● Proper Folder Structure
+● Loading States
+● Empty States
+● Error Handling UI
+● Form Validation
+6. API Standards
+Requirements
+● RESTful API structure
+● Proper status codes
+● Centralized error handling
+● Request validation
+● Clean response format
+Mandatory Additional Features
+The following features are mandatory and will not be considered bonus features:
+● Debounced Search
+● CSV Export Functionality
+● Role-Based Access Control
+○ Admin
+○ Sales User
+● Docker Setup
+Bonus Feature
+● Dark Mode Support
+Submission Requirements
+Candidates must submit:
+● GitHub Repository URL
+● Updated Resume
+● Proper README.md
+● .env.example
+● API Documentation
+● Setup Instructions
+● Deployment Link (Preferred)
+Submission Email
+Please send your submission to:
+ritik.yadav@servicehive.tech
+Subject Format:
+MERN Internship Assignment Submission - Your Name
+Evaluation Criteria
+Candidates will primarily be evaluated on:
+● Code Quality
+● Project Structure
+● TypeScript Usage
+● Reusability
+● API Design
+● UI/UX Quality
+● Error Handling
+● Scalability
+● Git Commit Quality
+● Problem Solving Approach
+Automatic Rejection Criteria
+Submissions may be rejected if they contain:
+● Plain JavaScript instead of TypeScript
+● Poor folder structure
+● No validation
+● Hardcoded values/URLs
+● No loading/error states
+● Extremely large components
+● Copied/template-style code
+● Improper TypeScript usage
+● Missing interfaces/types

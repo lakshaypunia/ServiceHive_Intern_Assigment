@@ -1,0 +1,19 @@
+# node_modules
+node_modules/
+dist/
+.env
+
+# Frontend build
+frontend/dist/
+frontend/build/
+
+# IDE files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+
