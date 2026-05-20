@@ -44,9 +44,10 @@ export function FiltersBar({
 
   return (
     <div className="p-4 border-b border-slate-100 dark:border-slate-800">
-      <div className="flex flex-wrap gap-3 items-center">
-        {/* Search */}
-        <div className="relative flex-1 min-w-[200px]">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+
+        {/* Search — full width on mobile, flexible on desktop */}
+        <div className="relative w-full sm:flex-1 sm:min-w-[200px]">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500 pointer-events-none" />
           <input
             type="text"
@@ -57,41 +58,37 @@ export function FiltersBar({
           />
         </div>
 
-        {/* Filters group */}
-        <div className="flex items-center gap-2">
-          <SlidersHorizontal className="w-4 h-4 text-slate-400 dark:text-slate-500 hidden sm:block" />
-
+        {/* Filters — mobile: 2-col grid (status+source), sort full-width below; desktop: flex row */}
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center sm:gap-2 sm:w-auto w-full">
+          <SlidersHorizontal className="hidden sm:block w-4 h-4 text-slate-400 dark:text-slate-500 flex-shrink-0" />
           <select
             value={filters.status ?? ''}
             onChange={(e) => onFilterChange('status', e.target.value as LeadStatus || undefined)}
-            className={selectClass}
+            className={`${selectClass} w-full`}
           >
             <option value="">All statuses</option>
             {statuses.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
-
           <select
             value={filters.source ?? ''}
             onChange={(e) => onFilterChange('source', e.target.value as LeadSource || undefined)}
-            className={selectClass}
+            className={`${selectClass} w-full`}
           >
             <option value="">All sources</option>
             {sources.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
-
           <select
             value={filters.sort ?? 'latest'}
             onChange={(e) => onFilterChange('sort', e.target.value)}
-            className={selectClass}
+            className={`${selectClass} w-full col-span-2 sm:col-span-1`}
           >
             <option value="latest">Newest first</option>
             <option value="oldest">Oldest first</option>
           </select>
         </div>
 
-        {/* Actions */}
-        <div className="flex items-center gap-2 ml-auto">
-          {/* Hidden file input */}
+        {/* Actions — mobile: Import+Export side by side, New Lead full-width below; desktop: flex row */}
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center sm:gap-2 sm:ml-auto sm:w-auto w-full">
           <input
             ref={fileInputRef}
             type="file"
@@ -103,26 +100,30 @@ export function FiltersBar({
             variant="secondary"
             onClick={() => fileInputRef.current?.click()}
             isLoading={isImporting}
-            className="gap-1.5"
+            className="w-full sm:w-auto justify-center gap-1.5"
             title="Import leads from CSV"
           >
             <Upload className="w-4 h-4" />
-            <span className="hidden sm:inline">Import CSV</span>
+            <span>Import CSV</span>
           </Button>
           <Button
             variant="secondary"
             onClick={onExport}
             isLoading={isExporting}
-            className="gap-1.5"
+            className="w-full sm:w-auto justify-center gap-1.5"
           >
             <Download className="w-4 h-4" />
-            <span className="hidden sm:inline">Export CSV</span>
+            <span>Export CSV</span>
           </Button>
-          <Button onClick={onNew} className="gap-1.5">
+          <Button
+            onClick={onNew}
+            className="col-span-2 sm:col-span-1 w-full sm:w-auto justify-center gap-1.5"
+          >
             <Plus className="w-4 h-4" />
-            <span className="hidden sm:inline">New Lead</span>
+            <span>New Lead</span>
           </Button>
         </div>
+
       </div>
     </div>
   );
